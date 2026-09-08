@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dr-demo-onboarding-api
+  namespace: onboarding
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dr-demo-onboarding-api
+  template:
+    metadata:
+      labels:
+        app: dr-demo-onboarding-api
+    spec:
+      containers:
+        - name: dr-demo-onboarding-api
+          image: ghcr.io/oodles-noodles/dr-demo-onboarding-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: dr-demo-onboarding-api-db
+                  key: url
